@@ -10,4 +10,11 @@
 // 定义了浮点数下的0
 #define ALMOST_ZERO(x) ((x)>-EPSILON && (x)<EPSILON)
 
+// 定义了画布大小
+const GLuint WIDTH = 800, HEIGHT = 800;
+
+// 定义了 MIN 和 MAX
+#define MIN(x,y) (x)>(y)?(y):(x)
+#define MAX(x,y) (x)>(y)?(x):(y)
+
 #endif

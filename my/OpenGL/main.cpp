@@ -19,9 +19,11 @@
 #include "constant.h"
 #include "Ray.h"
 #include "Camera.h"
+#include "Sphere.h"
 using namespace std;
 
-const GLuint WIDTH = 800, HEIGHT = 600;
+float dx = 1.0f / WIDTH;
+float dy = 1.0f / HEIGHT;
 
 // 递归深度
 #define MAX_RAY_DEPTH 5
@@ -67,6 +69,46 @@ void render(GLFWwindow* window)
 	glfwTerminate();
 }
 
+ //深度渲染
+void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
+{
+	long maxDepth = 18;
+	Sphere sphere1(Vec3f(0, 10, -10), 10.0);
+	float dD = 255.0f / maxDepth;
+	glLoadIdentity();
+	glTranslatef(-0.5f, -0.5f, 1.0f);
+	glPointSize(2.0f);
+
+	while (!glfwWindowShouldClose(window)) {
+		glfwPollEvents(); //响应事件
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glBegin(GL_POINTS);
+		for (long y = 0; y < HEIGHT; ++y)
+		{
+			float sy = 1 - dy * y;
+			for (long x = 0; x < WIDTH; ++x)
+			{
+				float sx = dx * x;
+				Ray ray(camera.generateRay(sx, sy));
+				IntersectResult result = sphere1.isIntersected(ray);
+				if (result.isHit)
+				{
+					double t = MIN(result.distance*dD, 255.0f);
+					int depth = (int)(255 - t);
+					glColor3ub(depth, depth, depth);
+					glVertex2f(sx, sy);
+				}
+			}
+		}
+		glEnd();
+
+		glfwSwapBuffers(window); // 交换缓存
+	}
+	glfwTerminate();
+}
+
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 int main(int argc, char **argv)
@@ -74,6 +116,11 @@ int main(int argc, char **argv)
 	Ray ray(Vec3f(1, 1, 1), Vec3f(2, 2, 2));
 	ray.show();
 	cout << ray.getPoint(1.0) << endl;
+
+	// 相机初始化
+	float horiz = 0.0;
+	float dep = 10;
+	PerspectiveCamera camera(Vec3f(horiz, 10, dep), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 90);
 
 	// 窗口初始化
 	glfwInit();
@@ -90,7 +137,7 @@ int main(int argc, char **argv)
 	//在窗口中渲染
 	glfwSetKeyCallback(window, key_call_back);
 
-	render(window);
+	renderDepth(window,camera);
 
 	system("pause");
 	return 0;

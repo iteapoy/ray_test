@@ -12,7 +12,7 @@ using namespace std;
 #define SPHERE_H
 
 class Sphere {
-private:
+public:
 	// center£ºÇòĞÄ¡¢radius£º°ë¾¶
 	Vec3f center;
 	float   radius;
@@ -20,10 +20,9 @@ private:
 	Sphere(const Sphere& s) :center(s.center), radius(s.radius) {  }
 	Sphere(const Vec3f& _center, float _radius) : center(_center), radius(_radius) {  }
 
-public:
 	float sqrRadius()const { return radius * radius; }
 
-	IntersectResult intersect(const Ray& ray) {
+	IntersectResult isIntersected(const Ray& ray) {
 		// r(t) = o+td
 		// ||x-c||=r --> ||o+td-c||=r --> v=o-c --> ||v+td||=r
 		Vec3f v = ray.origin - center;
@@ -42,7 +41,6 @@ public:
 				return result;
 			}
 		}
-
 		return IntersectResult::noHit();
 	}
 };
