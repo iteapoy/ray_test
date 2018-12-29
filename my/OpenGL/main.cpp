@@ -95,9 +95,10 @@ void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 				IntersectResult result = sphere1.isIntersected(ray);
 				if (result.isHit)
 				{
-					double t = MIN(result.distance*dD, 255.0f);
-					int depth = (int)(255 - t);
-					glColor3ub(depth, depth, depth);
+					//double t = MIN(result.distance*dD, 255.0f);
+					//int depth = (int)(255 - t);
+					//glColor3ub(depth, depth, depth);
+					glColor3ub(128 * (result.normal.x + 1), 128 * (result.normal.y + 1), 128 * (result.normal.z + 1));
 					glVertex2f(sx, sy);
 				}
 			}
