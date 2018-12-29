@@ -14,8 +14,8 @@ public:
 	// origin 射线原点，direction 射线方向
 	Vec3f origin, direction;
 
-	// 初始化 Ray 方向是单位向量
-	Ray(const Vec3f & _o, const Vec3f & _d) : origin(_o), direction(_d * (1.0 / _d.length())) {}
+	// 初始化 Ray 
+	Ray(const Vec3f & _o, const Vec3f & _d) : origin(_o), direction(_d) {}
 	Ray()  {}
 	Ray(const Ray & r) : origin(r.origin), direction(r.direction) {}
 	Ray & operator = (const Ray & r) {

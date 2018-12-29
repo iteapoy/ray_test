@@ -19,14 +19,13 @@ public:
 	Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
 
 	// 向量归一化
-	Vec3& normalize()
+	Vec3<T> normalize()
 	{
-		T nor2 = sqrLength();
-		if (nor2 > 0) {
-			T invNor = 1 / sqrt(nor2);
-			x *= invNor, y *= invNor, z *= invNor;
-		}
-		return *this;
+		T length = length();
+		x = x / length;
+		y = y / length;
+		z = z / length;
+		return Vec3<T>(x, y, z);
 	}
 
 	Vec3<T> operator * (const T &f) const { return Vec3<T>(x * f, y * f, z * f); }

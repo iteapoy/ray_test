@@ -27,13 +27,15 @@ public:
 	{
 		right = forward.cross(refUp);
 		up = right.cross(forward);
-		fovScale = tan(fov* PI  * 0.5f / 180) * 2 ;
+		fovScale = tan(fov* PI  * 0.5f / 180) * 2 ; // fovScale预先乘了2，因为sx映射到[-1,1]每次都要乘以2
 	}
 
 	Ray generateRay(float x, float y)const {
+		// 右
 		Vec3f r = right *((x - 0.5f) * fovScale);
+		// 上
 		Vec3f u = up*((y - 0.5f) * fovScale);
-		return Ray(eye, forward+r + u);
+		return Ray(eye, (forward+r + u).normalize());
 	}
 };
 #endif
