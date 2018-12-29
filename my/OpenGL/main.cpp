@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Sphere.h"
 #include "color.h"
+#include "Material.h"
 using namespace std;
 
 float dx = 1.0f / WIDTH;
