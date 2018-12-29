@@ -1,20 +1,14 @@
 #pragma once
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-#include <fstream>
-#include <vector>
 #include <iostream>
-#include <cassert>
 #include <algorithm>
-#include <sstream>
+#include"constant.h"
 
 using namespace std;
 
 #ifndef VEC3_H
 #define VEC3_H
 
-// 3维向量
+//定义了3维向量的加、减、乘、除、点乘、叉乘、输出、归一化
 template<typename T>
 class Vec3
 {
@@ -59,4 +53,11 @@ public:
 	}
 };
 
+typedef Vec3<float> Vec3f;
+
+bool isAlmostSame(const Vec3f & a, const Vec3f & b) {
+	if (ALMOST_ZERO(a.x - b.x) && ALMOST_ZERO(a.y - b.y) && ALMOST_ZERO(a.z - b.z))
+		return true;
+	return false;
+}
 #endif
