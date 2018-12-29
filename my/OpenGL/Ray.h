@@ -3,10 +3,12 @@
 #include "Vec3.h"
 
 using namespace std;
+
+// 定义射线
+
 #ifndef RAY_H
 #define RAY_H
 
-// 定义射线
 
 class Ray {
 public:

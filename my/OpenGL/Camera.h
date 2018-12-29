@@ -7,9 +7,9 @@ using namespace std;
 #ifndef CAMERA_H
 #define CAMERA_H
 
-// 透视摄像机 近大远小
-class PerspectiveCamera {
+// 定义了透视摄像机 近大远小
 
+class PerspectiveCamera {
 private:
 	// eye：视点，forward：前， refUp:上， fov：视野 field of view
 	Vec3f eye;
@@ -35,7 +35,7 @@ public:
 		Vec3f r = right *((x - 0.5f) * fovScale);
 		// 上
 		Vec3f u = up*((y - 0.5f) * fovScale);
-		return Ray(eye, (forward+r + u).normalize());
+		return Ray(eye, (forward + r + u).normalize());
 	}
 };
 #endif
