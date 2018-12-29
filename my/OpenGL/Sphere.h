@@ -35,6 +35,7 @@ public:
 			if (discr >= 0) {
 				IntersectResult result;
 				//result.geometry = this;
+				result.isHit = true;
 				result.distance = -DdotV - sqrt(discr);
 				result.position = ray.getPoint(result.distance);
 				result.normal = (result.position-this->center).normalize();
