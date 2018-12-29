@@ -4,8 +4,11 @@
 
 #include "color.h"
 #include "Material.h"
-#include "constant.h"
 #include <cmath>
+
+// 定义光
+static Vec3f lightDir = Vec3f(1, 1, 1).normalize();
+static Color lightColor = Color::white();
 
 // 定义一个phong材质
 class PhongMaterial :public Material
@@ -34,7 +37,7 @@ public:
 	//        specular = Is·Ks·（N·H)^shininess
 	// H=(L+V)/2
 	virtual Color sample(const Ray& ray, const Vec3f& position, const Vec3f& normal) {
-		float NdotL = normal.dot(lightDir);    // constant.h
+		float NdotL = normal.dot(lightDir); 
 		Vec3f H = (lightDir - ray.direction).normalize();
 		float NdotH = normal.dot(H);
 		Color diffuseTerm = this->diffuse * max(NdotL,float(0));
