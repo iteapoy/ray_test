@@ -20,6 +20,7 @@
 #include "Ray.h"
 #include "Camera.h"
 #include "Sphere.h"
+#include "color.h"
 using namespace std;
 
 float dx = 1.0f / WIDTH;
@@ -69,7 +70,7 @@ void render(GLFWwindow* window)
 	glfwTerminate();
 }
 
- //深度渲染
+ //交点法向量渲染
 void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 {
 	long maxDepth = 18;
@@ -77,7 +78,6 @@ void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 	float dD = 255.0f / maxDepth;
 	glLoadIdentity();
 	glTranslatef(-0.5f, -0.5f, 1.0f);
-	glPointSize(2.0f);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件

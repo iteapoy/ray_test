@@ -1,11 +1,11 @@
 #pragma once
+#ifndef INTERSECTRESULT_H
+#define INTERSECTRESULT_H
 
 #include "Vec3.h"
 
 // 表示相交结果的一个类
 
-#ifndef INTERSECTRESULT_H
-#define INTERSECTRESULT_H
 
 // 交点是否相交(isHit)、几何物件(geometry)、距离(distance)、位置(position)和法向量(normal)
 class IntersectResult {

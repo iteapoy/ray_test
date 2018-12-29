@@ -1,14 +1,12 @@
 #pragma once
+#ifndef RAY_H
+#define RAY_H
 
 #include "Vec3.h"
 
 using namespace std;
 
 // ∂®“Â…‰œﬂ
-
-#ifndef RAY_H
-#define RAY_H
-
 
 class Ray {
 public:

@@ -1,11 +1,12 @@
 #pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "Vec3.h"
 #include "Ray.h"
 #include <cmath>
 using namespace std;
 
-#ifndef CAMERA_H
-#define CAMERA_H
 
 // 定义了透视摄像机 近大远小
 

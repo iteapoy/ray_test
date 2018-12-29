@@ -1,4 +1,6 @@
 #pragma once
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include <iostream>
 #include <algorithm>
@@ -8,8 +10,6 @@
 using namespace std;
 
 // 定义球体
-#ifndef SPHERE_H
-#define SPHERE_H
 
 class Sphere {
 public:
@@ -20,8 +20,10 @@ public:
 	Sphere(const Sphere& s) :center(s.center), radius(s.radius) {  }
 	Sphere(const Vec3f& _center, float _radius) : center(_center), radius(_radius) {  }
 
+	// 返回半径的平方
 	float sqrRadius()const { return radius * radius; }
 
+	// 判断球和光线ray是否有交点，如果有交点就返回交点，如果没有交点就返回一个空值
 	IntersectResult isIntersected(const Ray& ray) {
 		// r(t) = o+td
 		// ||x-c||=r --> ||o+td-c||=r --> v=o-c --> ||v+td||=r
