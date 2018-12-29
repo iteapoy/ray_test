@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 {
 	Ray ray(Vec3f(1, 1, 1), Vec3f(2, 2, 2));
 	ray.show();
-
+	cout << ray.getPoint(1.0) << endl;
 
 	// ´°¿Ú³õÊ¼»¯
 	glfwInit();
