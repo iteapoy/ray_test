@@ -15,13 +15,11 @@
 #include <glm\vec3.hpp>
 #include <glm\glm.hpp>
 
-#include "Vec3.h"
 #include "constant.h"
-#include "Ray.h"
 #include "Camera.h"
 #include "Sphere.h"
 #include "color.h"
-#include "Material.h"
+#include "CheckMaterial.h"
 using namespace std;
 
 float dx = 1.0f / WIDTH;

@@ -24,7 +24,7 @@ public:
 	// 析构函数
 	virtual ~Material() {};
 	// 虚函数，获得光照和材质相交后的颜色属性
-	virtual Color sample(const Ray& ray, const Vec3f& position, const Vec3f& normal) { cout << "sample" << endl; }
+	virtual Color sample(const Ray& ray, const Vec3f& position, const Vec3f& normal) { cout << "基类" << endl; }
 };
 
 #endif

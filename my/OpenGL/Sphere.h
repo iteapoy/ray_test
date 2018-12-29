@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <algorithm>
-#include "Vec3.h"
 #include "intersectresult.h"
 #include "Ray.h"
 using namespace std;

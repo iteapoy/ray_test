@@ -13,8 +13,8 @@
 // 定义了画布大小
 const GLuint WIDTH = 800, HEIGHT = 800;
 
-// 定义了 MIN 和 MAX
-#define MIN(x,y) (x)>(y)?(y):(x)
-#define MAX(x,y) (x)>(y)?(x):(y)
+// 定义光
+static Vec3f lightDir = Vec3f(1, 1, 1).normalize();
+static Color lightColor = Color::white();
 
 #endif
