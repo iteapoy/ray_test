@@ -17,6 +17,7 @@ public:
 	virtual ~Union() {};
 	void push(Object* object) { objects.push_back(object); }
 
+	// 场景，返回与光线ray最近的交点minResult的情况
 	virtual IntersectResult isIntersected(const Ray& ray) {
 		float minDistance = INF;
 		IntersectResult minResult = IntersectResult::noHit();

@@ -52,9 +52,4 @@ public:
 	}
 };
 
-bool isAlmostSame(const Vec3f & a, const Vec3f & b) {
-	if (ALMOST_ZERO(a.x - b.x) && ALMOST_ZERO(a.y - b.y) && ALMOST_ZERO(a.z - b.z))
-		return true;
-	return false;
-}
 #endif

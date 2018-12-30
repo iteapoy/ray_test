@@ -6,7 +6,7 @@
 #include <cmath>
 
 // ¶¨Òå¹â
-static Vec3f lightDir = Vec3f(1.75, 2, 1.5).normalize();
+static Vec3f lightDir = Vec3f(1.0, 2.0, 1.0).normalize();
 static Color La = Color::black();
 static Color Ld = Color::white();
 static Color Ls = Color::white();
@@ -45,7 +45,7 @@ public:
 
 		Color ambient = this->Ka *La;
 		Color diffuse = this->Kd * NdotL*Ld;
-		Color specular = this->Ks * pow(NdotH,this->shininess)*Ls;
+		Color specular = this->Ks * pow(NdotH, this->shininess)*Ls;
 
 		return ambient + diffuse + specular;
 	}

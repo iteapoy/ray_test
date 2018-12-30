@@ -35,6 +35,7 @@ public:
 	static inline Color yellow() { return Color(0.988, 0.8, 0.208); }
 	static inline Color cyan() { return Color(0.4196, 0.749, 0.7176); }
 	static inline Color gray() { return  Color(0.5, 0.5, 0.5); }
+	static inline Color red() { return  Color(1, 0.5, 0.5); }
 };
 
 #endif 

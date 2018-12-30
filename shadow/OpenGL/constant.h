@@ -6,8 +6,6 @@
 #define PI 3.141592653589793
 #define EPSILON 1e-8
 const float INF=1e30;
-
-// 定义了浮点数下的0
-#define ALMOST_ZERO(x) ((x)>-EPSILON && (x)<EPSILON)
-
+//生产shadowRay的修正值
+const float k = 1e-4;
 #endif
