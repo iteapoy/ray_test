@@ -1,0 +1,8 @@
+﻿  main.cpp
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\constant.h(8): warning C4305: “初始化”: 从“double”到“float”截断
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\camera.h(31): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\color.h(35): warning C4305: “参数”: 从“double”到“float”截断
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\color.h(36): warning C4305: “参数”: 从“double”到“float”截断
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\checkmaterial.h(23): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+d:\4-unv course\unv3-term1\computer graphics\code\1-opengl-homework\hw2-q1\ray_test\my\opengl\main.cpp(109): warning C4244: “参数”: 从“float”转换到“GLubyte”，可能丢失数据
+  OpenGL.vcxproj -> D:\4-Unv Course\Unv3-term1\computer graphics\code\1-OpenGL-homework\hw2-Q1\ray_test\my\Debug\OpenGL.exe
