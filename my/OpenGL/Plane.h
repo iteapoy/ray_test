@@ -27,6 +27,7 @@ public:
 		IntersectResult result = IntersectResult::noHit();
 		float a = ray.direction.dot(this->normal);
 		if (a < 0) {
+			result.geometry = this;
 			result.isHit = true;
 			float b = this->normal.dot(this->position - ray.origin);
 			result.distance = b / a;

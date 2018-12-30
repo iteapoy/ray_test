@@ -2,8 +2,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include <iostream>
-#include <algorithm>
+
 #include"Object.h"
 using namespace std;
 
@@ -33,7 +32,7 @@ public:
 			float discr = DdotV * DdotV - a0;
 			if (discr >= 0) {
 				IntersectResult result;
-				//result.geometry = this;
+				result.geometry = this;
 				result.isHit = true;
 				result.distance = -DdotV - sqrt(discr);
 				result.position = ray.getPoint(result.distance);

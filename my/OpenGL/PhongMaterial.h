@@ -2,7 +2,6 @@
 #ifndef PHONGMATERIAL_H
 #define PHONGMATERIAL_H
 
-#include "color.h"
 #include "Material.h"
 #include <cmath>
 
