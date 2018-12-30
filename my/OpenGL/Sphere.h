@@ -4,13 +4,12 @@
 
 #include <iostream>
 #include <algorithm>
-#include "intersectresult.h"
-#include "Ray.h"
+#include"Object.h"
 using namespace std;
 
 // 定义球体
 
-class Sphere {
+class Sphere:public Object {
 public:
 	// center：球心、radius：半径
 	Vec3f center;
@@ -23,7 +22,7 @@ public:
 	float sqrRadius()const { return radius * radius; }
 
 	// 判断球和光线ray是否有交点，如果有交点就返回交点，如果没有交点就返回一个空值
-	IntersectResult isIntersected(const Ray& ray) {
+	virtual IntersectResult isIntersected(const Ray& ray) {
 		// r(t) = o+td
 		// ||x-c||=r --> ||o+td-c||=r --> v=o-c --> ||v+td||=r
 		Vec3f v = ray.origin - center;

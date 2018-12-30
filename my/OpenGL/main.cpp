@@ -20,6 +20,8 @@
 #include "Sphere.h"
 #include "color.h"
 #include "CheckMaterial.h"
+#include "PhongMaterial.h"
+#include "Plane.h"
 using namespace std;
 
 float dx = 1.0f / WIDTH;
@@ -72,11 +74,16 @@ void render(GLFWwindow* window)
  //交点法向量渲染
 void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 {
-	long maxDepth = 18;
-	Sphere sphere1(Vec3f(0, 10, -10), 10.0);
-	float dD = 255.0f / maxDepth;
 	glLoadIdentity();
+	glScaled(2.0f, 2.0f, 1.0f);
 	glTranslatef(-0.5f, -0.5f, 1.0f);
+
+	long maxDepth = 20;
+	Sphere* sphere1=new Sphere(Vec3f(0, 5, -10), 5.0);
+	Plane* plane1=new Plane(Vec3f(0, 1, 0), 1.0);
+	plane1->material = new CheckMaterial(0.1f);
+	sphere1->material = new PhongMaterial(Color(1, 0, 0), Color(1, 1, 1), 20);
+	float dD = 255.0f / maxDepth;
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件
@@ -91,13 +98,12 @@ void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 			{
 				float sx = dx * x;
 				Ray ray(camera.generateRay(sx, sy));
-				IntersectResult result = sphere1.isIntersected(ray);
+				IntersectResult result = sphere1->isIntersected(ray);
 				if (result.isHit)
 				{
-					//double t = MIN(result.distance*dD, 255.0f);
-					//int depth = (int)(255 - t);
-					//glColor3ub(depth, depth, depth);
-					glColor3ub(128 * (result.normal.x + 1), 128 * (result.normal.y + 1), 128 * (result.normal.z + 1));
+					Color color = sphere1->material->sample(ray, result.position, result.normal);
+					color.saturate();
+					glColor3ub(color.r*255, color.g*255, color.b*255);
 					glVertex2f(sx, sy);
 				}
 			}
@@ -113,14 +119,8 @@ void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mo
 
 int main(int argc, char **argv)
 {
-	Ray ray(Vec3f(1, 1, 1), Vec3f(2, 2, 2));
-	ray.show();
-	cout << ray.getPoint(1.0) << endl;
-
 	// 相机初始化
-	float horiz = 0.0;
-	float dep = 10;
-	PerspectiveCamera camera(Vec3f(horiz, 10, dep), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 90);
+	PerspectiveCamera camera(Vec3f(0, 10, 10), Vec3f(0, -0.5, -1), Vec3f(0, 1, 0), 90);
 
 	// 窗口初始化
 	glfwInit();

@@ -2,11 +2,10 @@
 #ifndef PLANE_H
 #define PLANE_H
 
-#include"intersectresult.h"
-#include"Ray.h"
+#include"Object.h"
 // 定义一个平面类
 
-class Plane {
+class Plane:public Object {
 	// normal：法向量， d：到原点的距离, position 取光源离平面最近的点（垂足）
 public:
 	Vec3f normal;
@@ -24,7 +23,7 @@ public:
 	// 平面的定义： 
 	// (p-p1)·n=0, p =r(t)=o+td
 	// t = (p1-o)·n/(d·n)
-	virtual IntersectResult isIntersected(Ray& ray) {
+	virtual IntersectResult isIntersected(const Ray& ray) {
 		IntersectResult result = IntersectResult::noHit();
 		float a = ray.direction.dot(this->normal);
 		if (a < 0) {

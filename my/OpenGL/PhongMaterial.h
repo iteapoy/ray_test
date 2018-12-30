@@ -8,7 +8,7 @@
 
 // 定义光
 static Vec3f lightDir = Vec3f(1, 1, 1).normalize();
-static Color lightColor = Color::white();
+static Color lightColor = Color::Color(1, 1, 1);
 
 // 定义一个phong材质
 class PhongMaterial :public Material
@@ -41,7 +41,7 @@ public:
 		Vec3f H = (lightDir - ray.direction).normalize();
 		float NdotH = normal.dot(H);
 		Color diffuseTerm = this->diffuse * max(NdotL,float(0));
-		Color specularTerm = this->diffuse * pow(max(NdotH,float(0)),this->shininess);
+		Color specularTerm = this->specular * pow(max(NdotH,float(0)),this->shininess);
 
 		return lightColor * (diffuseTerm + specularTerm);
 	}
