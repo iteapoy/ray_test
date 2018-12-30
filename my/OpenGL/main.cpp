@@ -98,12 +98,12 @@ void renderDepth(GLFWwindow* window, PerspectiveCamera &camera)
 			{
 				float sx = dx * x;
 				Ray ray(camera.generateRay(sx, sy));
-				//IntersectResult result = sphere1->isIntersected(ray);
-				IntersectResult result = plane1->isIntersected(ray);
+				IntersectResult result = sphere1->isIntersected(ray);
+				//IntersectResult result = plane1->isIntersected(ray);
 				if (result.isHit)
 				{
-					//Color color = sphere1->material->sample(ray, result.position, result.normal);
-					Color color = plane1->material->sample(ray, result.position, result.normal);
+					Color color = sphere1->material->sample(ray, result.position, result.normal);
+					//Color color = plane1->material->sample(ray, result.position, result.normal);
 					color.saturate();
 					glColor3ub(color.r*255, color.g*255, color.b*255);
 					glVertex2f(sx, sy);
