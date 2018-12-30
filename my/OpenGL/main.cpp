@@ -25,65 +25,55 @@
 #include "Union.h"
 using namespace std;
 
+// 画布大小
+const GLuint WIDTH = 800, HEIGHT = 800;
+
+long maxDepth = 20;
+float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 
 // 递归深度
 #define MAX_RAY_DEPTH 5
 
-void render(GLFWwindow* window)
+
+// 光线追踪算法
+Color rayTrace(Object* scene, Ray &ray, long maxReflect)
 {
-	//unsigned WIDTH = 640, HEIGHT = 480;
 
-	// Render PIXELS
-	unsigned int* pix = new unsigned int[WIDTH*HEIGHT * 3];
+	IntersectResult result = scene->isIntersected(ray);
 
-	//// Setting camera (you can using (0,0,0) as orignal point)
-	Vec3f *image = new Vec3f[WIDTH * HEIGHT], *pixel = image;
-	float invWidth = 1 / float(WIDTH), invHeight = 1 / float(HEIGHT);
-	float fov = 45, aspectratio = WIDTH / float(HEIGHT);
-	float angle = tan(PI * 0.5 * fov / 180.);
-
-	double beforetime = glfwGetTime();
-
-	// ray tracing
-
-	double aftertime = glfwGetTime();
-	double totaltime = aftertime - beforetime;
-
-	for (unsigned i = 0; i < HEIGHT; i++)
-		for (unsigned j = 0; j < WIDTH; j++) {
-			pix[3 * ((HEIGHT - 1 - i)*WIDTH + j)] = min(image[i*WIDTH + j].x, float(1)) * 255;
-			pix[3 * ((HEIGHT - 1 - i)*WIDTH + j) + 1] = min(image[i*WIDTH + j].y, float(1)) * 255;
-			pix[3 * ((HEIGHT - 1 - i)*WIDTH + j) + 2] = min(image[i*WIDTH + j].z, float(1)) * 255;
+	if (result.geometry)
+	{
+		float reflectiveness = result.geometry->material->getRef();
+		Color color = result.geometry->material->sample(ray, result.position, result.normal);
+		color = color * (1 - reflectiveness);
+		if ((reflectiveness > 0) && (maxReflect > 0))
+		{
+			// R=2(L·N)·N-L
+			Vec3f r = result.normal *(-2 * result.normal.dot(ray.direction)) + ray.direction;
+			Ray ray = Ray(result.position, r);
+			Color reflectedColor = rayTrace(scene, ray, maxReflect - 1);
+			color = color + reflectedColor * reflectiveness;
 		}
-
-	while (!glfwWindowShouldClose(window)) {
-		//响应事件
-		glfwPollEvents();
-
-		glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glDrawPixels(WIDTH, HEIGHT, GL_RGB, GL_UNSIGNED_BYTE, pix);
-		glfwSwapBuffers(window); //交换缓存
+		return color;
 	}
-	delete[] pix;
-	glfwTerminate();
+	else return La;
 }
 
-void renderUnion(GLFWwindow* window, PerspectiveCamera &camera)
+void renderScene(GLFWwindow* window, PerspectiveCamera &camera)
 {
-
-	long maxDepth = 20;
-	Sphere* sphere1 = new Sphere(Vec3f(0, 6, -10), 6.0);
+	// 创建场景，两个球体，一个带棋盘格子的平面
+	Sphere* sphere1 = new Sphere(Vec3f(-3, 5, -10), 5.0);
+	Sphere* sphere2 = new Sphere(Vec3f(5, 4, -10), 3.0);
 	Plane* plane1 = new Plane(Vec3f(0, 1, 0), 1.0);
 	plane1->material = new CheckMaterial(0.1f);
-	sphere1->material = new PhongMaterial(Color(1, 0, 0), Color(1, 1, 1), 20);
+	sphere1->material = new PhongMaterial(Color::yellow(), Color::white(), 20, 0.25);
+	sphere2->material = new PhongMaterial(Color::cyan(), Color::white(), 16, 0.25);
 	Union scene;
 	scene.push(plane1);
 	scene.push(sphere1);
-	float dD = 255.0f / maxDepth;
+	scene.push(sphere2);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件
@@ -101,11 +91,12 @@ void renderUnion(GLFWwindow* window, PerspectiveCamera &camera)
 			for (long x = 0; x < WIDTH; ++x)
 			{
 				float sx = dx * x;
+				// 从 (sx,sy） 发出光线
 				Ray ray(camera.generateRay(sx, sy));
 				IntersectResult result = scene.isIntersected(ray);
 				if (result.isHit)
 				{
-					Color color = result.geometry->material->sample(ray, result.position, result.normal);
+					Color color = rayTrace(&scene, ray, MAX_RAY_DEPTH);
 					color.saturate();
 					glColor3ub(color.r * 255, color.g * 255, color.b * 255);
 					glVertex2f(sx, sy);
@@ -118,6 +109,7 @@ void renderUnion(GLFWwindow* window, PerspectiveCamera &camera)
 	}
 	glfwTerminate();
 }
+
 
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -141,7 +133,7 @@ int main(int argc, char **argv)
 	//在窗口中渲染
 	glfwSetKeyCallback(window, key_call_back);
 
-	renderUnion(window,camera);
+	renderScene(window,camera);
 
 	system("pause");
 	return 0;

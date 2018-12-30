@@ -32,6 +32,8 @@ public:
 
 	static inline Color black() { return Color(0, 0, 0); }
 	static inline Color white() { return Color(1, 1, 1); }
+	static inline Color yellow() { return Color(0.988, 0.8, 0.208); }
+	static inline Color cyan() { return Color(0.4196, 0.749, 0.7176); }
 };
 
 #endif 
