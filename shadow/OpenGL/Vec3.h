@@ -36,7 +36,7 @@ public:
 	float length() const { return sqrt(sqrLength()); }
 
 	// 向量归一化
-	Vec3f normalize()
+	Vec3f normalize() 
 	{
 		float length = this->length();
 		if (length == 0) return Vec3f(0, 0, 0);

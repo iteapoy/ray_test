@@ -6,7 +6,7 @@
 #include <cmath>
 
 // 定义光
-static Vec3f lightDir = Vec3f(1.0, 2.0, 1.0).normalize();
+static Vec3f lightDir = Vec3f(1.0, 3.0, 0.75).normalize();
 static Color La = Color::black();
 static Color Ld = Color::white();
 static Color Ls = Color::white();
@@ -24,7 +24,7 @@ public:
 	// 初始化
 	PhongMaterial() {};
 	PhongMaterial(const Color& _Kd, const Color& _Ks, const float& _shininess, float _reflectiveness = 0):
-		Kd(_Kd), Ks(_Ks), shininess(_shininess){reflectiveness = _reflectiveness;}
+		Ka(Color::black()),Kd(_Kd), Ks(_Ks), shininess(_shininess){reflectiveness = _reflectiveness;}
 
 	// ---------------------- 漫反射公式 ------------------------
 	//        Kd = Id·Kd·(N·L）

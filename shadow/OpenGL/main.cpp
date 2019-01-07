@@ -48,7 +48,7 @@ Color rayTrace(Object* scene, Ray &ray, long maxReflect)
 		// 获得交点对象的材质反射系数
 		float reflectiveness = result.geometry->material->getRef();
 		// 获得交点对象的材质的颜色
-		Color color = result.geometry->material->sample(ray, result.position, result.normal);
+		Color color = result.geometry->material->sample(ray, result.position, result.normal.normalize());
 		if ((reflectiveness > 0) && (maxReflect > 0))
 		{
 			// 获得交点对象的实际的颜色
@@ -68,6 +68,7 @@ Color rayTrace(Object* scene, Ray &ray, long maxReflect)
 void renderScene(GLFWwindow* window, PerspectiveCamera &camera,Union &scene)
 {
 	DirectLight light1(Color::white(), lightDir*(-1),true);
+
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -91,9 +92,12 @@ void renderScene(GLFWwindow* window, PerspectiveCamera &camera,Union &scene)
 				{
 					// 利用光线追踪求颜色
 					//Color color = rayTrace(&scene, ray, MAX_RAY_DEPTH);
+					// 阴影效果
+					//Color color = light1.intersect(scene, result);
 					Color color = light1.intersect(scene, result) * rayTrace(&scene, ray, MAX_RAY_DEPTH);
 					color.saturate();
 					glColor3ub(color.r * 255, color.g * 255, color.b * 255);
+					//glColor3ub((result.normal.x+1) * 128, (result.normal.y + 1) * 128, (result.normal.z + 1) * 128);
 					glVertex2f(sx, sy);
 				}
 			}
@@ -112,12 +116,12 @@ int main(int argc, char **argv)
 {
 	// 相机初始化
 	// 第一个参数：视点，第二个参数：前，第三个参数：上，第四个参数：FOV 视野
-	PerspectiveCamera camera(Vec3f(0, 10, 10), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 90);
+	PerspectiveCamera camera(Vec3f(0,10, 10), Vec3f(0, 0, -1), Vec3f(0, 1, 0), 90);
 
 	// 创建场景，两个球体，一个带棋盘格子的平面
 	//Sphere* sphere1 = new Sphere(Vec3f(-3, 5, -10), 5.0);
-	Sphere* sphere1 = new Sphere(Vec3f(-3, 5, -10), 5.0);
-	Sphere* sphere2 = new Sphere(Vec3f(5, 3, -10), 3.0);
+	Sphere* sphere1 = new Sphere(Vec3f(-5, 5, -15), 5.0);
+	Sphere* sphere2 = new Sphere(Vec3f(3, 3, -10), 3.0);
 
 	Plane* plane1 = new Plane(Vec3f(0, 1, 0), 0.0);
 	Plane* plane2 = new Plane(Vec3f(0, 0, 1), -50);
@@ -128,7 +132,7 @@ int main(int argc, char **argv)
 	plane2->material = new PhongMaterial(Color::gray(), Color::white(), 10, 0);
 	plane3->material = new PhongMaterial(Color::gray(), Color::white(), 10, 0);
 	sphere1->material = new PhongMaterial(Color::yellow(), Color::white(), 20, 0.05);
-	sphere2->material = new PhongMaterial(Color::cyan(), Color::white(), 16, 0.05);
+	sphere2->material = new PhongMaterial(Color::cyan(), Color::white(), 16, 0.04);
 	Union scene;
 	scene.push(plane1);
 	//scene.push(plane2);
@@ -148,7 +152,7 @@ int main(int argc, char **argv)
 
 	glfwMakeContextCurrent(window);
 
-	//在窗口中渲染
+	//在窗口中渲染3
 	glfwSetKeyCallback(window, key_call_back);
 
 	renderScene(window,camera,scene);

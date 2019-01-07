@@ -16,6 +16,7 @@ public:
 	Plane() {};
 	Plane(const Vec3f& _normal, float _d) :normal(_normal), d(_d) {
 		position = normal * d;
+		normal.normalize();
 	};
 	// Îö¹¹º¯Êý
 	virtual ~Plane() {};
@@ -29,8 +30,8 @@ public:
 		if (a < 0) {
 			result.geometry = this;
 			result.isHit = true;
-			float b = this->normal.dot(this->position - ray.origin);
-			result.distance = b / a;
+			float b = this->normal.dot(ray.origin - this->position);
+			result.distance = - b / a;
 			result.position = ray.getPoint(result.distance);
 			result.normal = this->normal;
 		}

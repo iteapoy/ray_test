@@ -36,11 +36,12 @@ public:
 			if (lightResult.geometry)
 				return resultColor;
 
-		////计算光强
+		//计算光强
 		//float NdotL = result.normal.dot(shadowDir);
 		//if (NdotL >= 0)
 		//	resultColor = resultColor + this->color*NdotL;
-		// 因为直接和原有的phong材质做叠加，所以返回white=(1，1，1)，乘上后就变得正常了
+		// //因为直接和原有的phong材质做叠加，所以返回white=(1，1，1)，乘上后就变得正常了
+		//return resultColor;
 		return Color::white();
 	};
 };
