@@ -73,7 +73,7 @@ void renderScene(GLFWwindow* window, PerspectiveCamera &camera)
 	plane1->material = new CheckMaterial(0.1f);
 	plane2->material = new PhongMaterial(Color::gray(), Color::white(), 10, 0);
 	plane3->material = new PhongMaterial(Color::gray(), Color::white(), 10, 0);
-	sphere1->material = new PhongMaterial(Color::yellow(), Color::white(), 20, 0);
+	sphere1->material = new PhongMaterial(Color::yellow(), Color::white(), 20, 0.25);
 	sphere2->material = new PhongMaterial(Color::cyan(), Color::white(), 16, 0.25);
 	Union scene;
 	scene.push(plane1);
