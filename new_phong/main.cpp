@@ -31,7 +31,7 @@ float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 10;
+int ns = 1;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
@@ -55,8 +55,9 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 	if (result.isHit&&maxReflect > 0) {
 		Ray out;
 		Vec3f attenuation;
-		if (result.geometry->material&&maxReflect > 0 && result.geometry->material->sample(ray, result, attenuation, out))
+		if (result.geometry->material&&maxReflect > 0 && result.geometry->material->sample(ray, result, attenuation, out)) {
 			return attenuation * color(out, scene, maxReflect - 1);
+		}
 	}
 	// 获得单位向量
 	Vec3f unit_dir = ray.direction.unit();
@@ -70,7 +71,7 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 
 void renderScene(GLFWwindow* window)
 {
-	Camera cam;
+	Camera cam(Vec3f(-2,2,1),Vec3f(0,0,-1),Vec3f(0,1,0),20,WIDTH/HEIGHT);
 	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
 	Sphere* sphere3 = new Sphere(Vec3f(1, 0, -1), 0.5);

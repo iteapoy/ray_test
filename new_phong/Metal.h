@@ -4,6 +4,7 @@
 
 #include "Material.h"
 
+// 定义镜面反射
 class Metal : public Material
 {
 public:
@@ -12,7 +13,6 @@ public:
 	Metal() {}
 	virtual ~Metal() {}
 	virtual bool sample(const Ray& ray, const  IntersectResult& result, Vec3f& attenuation, Ray& out) {
-		/*这里具体实现metal::scatter()。做两件事情：获取镜面反射的反射光线；获取材料的衰减系数。 */
 		Vec3f reflected = reflect(ray.direction.unit(), result.normal);
 		out = Ray(result.position, reflected);
 		attenuation = albedo;
@@ -20,7 +20,6 @@ public:
 	}
 
 	Vec3f reflect(const Vec3f& v, const Vec3f& n) {
-		/*获取镜面反射的反射光线的方向向量。具体计算，后面解释*/
 		return v - n * 2 * v.dot(n);
 	}
 
