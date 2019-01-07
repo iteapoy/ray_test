@@ -38,9 +38,6 @@
     <ClInclude Include="Sphere.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="intersectresult.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="color.h">
       <Filter>源文件</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="Union.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="intersectresult.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
