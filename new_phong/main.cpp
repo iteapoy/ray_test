@@ -66,8 +66,8 @@ int main(int argc, char **argv)
 			{
 				float sx = dx * x;
 
-				//glColor3ub(color.r * 255, color.g * 255, color.b * 255);
-				glColor3ub(sx * 255, sy * 255, 0.2);
+				Vec3f color(sx, sy, 0.2);
+				glColor3ub(color.x*255,color.y*255,color.z*255);
 				glVertex2f(sx, sy);
 			}
 		}

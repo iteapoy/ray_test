@@ -23,10 +23,15 @@ public:
 	// 点乘
 	float dot(const Vec3f &v) const { return x * v.x + y * v.y + z * v.z; }
 
+	Vec3f operator / (const float &f) const { return Vec3f(x / f, y /f, z / f); }
+	Vec3f operator / (const Vec3f &v) const { return Vec3f(x / v.x, y / v.y, z /v.z); }
+
 	Vec3f operator - (const Vec3f &v) const { return Vec3f(x - v.x, y - v.y, z - v.z); }
 	Vec3f operator + (const Vec3f &v) const { return Vec3f(x + v.x, y + v.y, z + v.z); }
 	Vec3f& operator += (const Vec3f &v) { x += v.x, y += v.y, z += v.z; return *this; }
+	Vec3f& operator -= (const Vec3f &v) { x -= v.x, y -= v.y, z -= v.z; return *this; }
 	Vec3f& operator *= (const Vec3f &v) { x *= v.x, y *= v.y, z *= v.z; return *this; }
+	Vec3f& operator /= (const Vec3f &v) { x /= v.x, y/= v.y, z /= v.z; return *this; }
 	Vec3f operator - () const { return Vec3f(-x, -y, -z); }
 
 	// 长度的平方
@@ -38,16 +43,33 @@ public:
 	Vec3f normalize()
 	{
 		float length = this->length();
+		// 除零
 		if (length == 0) return Vec3f(0, 0, 0);
 		x = x / length;
 		y = y / length;
 		z = z / length;
 		return Vec3f(x, y, z);
 	}
+
+	// 获得单位向量
+	Vec3f get_unit()
+	{
+		float length = this->length();
+		// 除零
+		if (length == 0) return Vec3f(0, 0, 0);
+
+		return Vec3f(x / length, y / length, z / length);
+	}
 	friend ostream & operator << (ostream &os, const Vec3f &v)
 	{
 		os << "[" << v.x << " " << v.y << " " << v.z << "]";
 		return os;
+	}
+
+	friend istream & operator >> (istream &is, Vec3f &v)
+	{
+		is >> v.x >> v.y >> v.z;
+		return is;
 	}
 };
 
