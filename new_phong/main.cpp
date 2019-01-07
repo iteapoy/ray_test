@@ -19,18 +19,19 @@
 #include "Sphere.h"
 #include "Camera.h"
 #include "Lambertian.h"
+#include "Metal.h"
 
 using namespace std;
 
 // 画布大小
-const GLuint WIDTH = 600, HEIGHT = 600;
+const GLuint WIDTH = 800, HEIGHT = 400;
 
 long maxDepth = 20;
 float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 1;
+int ns = 10;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
@@ -72,10 +73,17 @@ void renderScene(GLFWwindow* window)
 	Camera cam;
 	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
-	sphere1->material = new Lambertian(Vec3f(1, 1, 1));
+	Sphere* sphere3 = new Sphere(Vec3f(1, 0, -1), 0.5);
+	Sphere* sphere4 = new Sphere(Vec3f(-1, 0, -1), 0.5);
+	sphere1->material = new Lambertian(Vec3f(0.8, 0.3, 0.3));
+	sphere2->material = new Lambertian(Vec3f(0.8, 0.8, 0.0));
+	sphere3->material = new Metal(Vec3f(0.8, 0.6, 0.2));
+	sphere4->material = new Metal(Vec3f(0.8, 0.8, 0.8));
 	Union scene;
 	scene.push(sphere1);
 	scene.push(sphere2);
+	scene.push(sphere3);
+	scene.push(sphere4);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件
