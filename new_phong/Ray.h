@@ -8,7 +8,8 @@ using namespace std;
 
 // 定义射线
 
-class Ray {
+class Ray 
+{
 public:
 	// r(t)=o+td
 	// origin 射线原点，direction 射线方向

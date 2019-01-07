@@ -18,18 +18,19 @@
 #include "Union.h"
 #include "Sphere.h"
 #include "Camera.h"
+#include "Lambertian.h"
 
 using namespace std;
 
 // 画布大小
-const GLuint WIDTH = 400, HEIGHT = 400;
+const GLuint WIDTH = 600, HEIGHT = 600;
 
 long maxDepth = 20;
 float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 5;
+int ns = 1;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
@@ -50,9 +51,11 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 {
 	IntersectResult result = scene->isIntersected(ray);
 
-	if (result.isHit&&maxReflect>0) {
-		Vec3f target = result.position + result.normal.unit() + random_in_unit_sphere();
-		return color(Ray(result.position,target-result.position),scene, maxReflect-1)*0.5;
+	if (result.isHit&&maxReflect > 0) {
+		Ray out;
+		Vec3f attenuation;
+		if (result.geometry->material&&maxReflect > 0 && result.geometry->material->sample(ray, result, attenuation, out))
+			return attenuation * color(out, scene, maxReflect - 1);
 	}
 	// 获得单位向量
 	Vec3f unit_dir = ray.direction.unit();
@@ -69,6 +72,7 @@ void renderScene(GLFWwindow* window)
 	Camera cam;
 	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
+	sphere1->material = new Lambertian(Vec3f(1, 1, 1));
 	Union scene;
 	scene.push(sphere1);
 	scene.push(sphere2);
