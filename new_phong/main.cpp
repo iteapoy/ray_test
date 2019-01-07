@@ -17,6 +17,7 @@
 
 #include "Union.h"
 #include "Sphere.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -27,8 +28,6 @@ long maxDepth = 20;
 float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
-// 采样率，消除锯齿
-int ns = 100;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
@@ -51,13 +50,9 @@ Vec3f color(const Ray & ray, Object* scene)
 	return Vec3f(1.0, 1.0, 1.0)*(1.0 - t) + Vec3f(0.5, 0.7, 1.0)*t;
 }
 
-Vec3f lower_left_corner(-1.0, -1.0, -1.0);
-Vec3f horizontal(2.0, 0.0, 0.0);
-Vec3f vertical(0.0, 2.0, 0.0);
-Vec3f origin(0.0, 0.0, 0.0);
-
 void renderScene(GLFWwindow* window)
 {
+	Camera cam;
 	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
 	Union scene;
@@ -80,8 +75,8 @@ void renderScene(GLFWwindow* window)
 			for (long x = 0; x < WIDTH; ++x)
 			{
 				float sx = dx * x;
-				Ray ray(origin, lower_left_corner + horizontal * sx + vertical * sy);
-				Vec3f c = color(ray,&scene);
+				Ray ray = cam.generateRay(sx, sy);
+				Vec3f c = color(ray, &scene);
 				glColor3ub(c.x * 255, c.y * 255, c.z * 255);
 				glVertex2f(sx, sy);
 			}
