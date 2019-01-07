@@ -15,12 +15,12 @@ public:
 	Vec3f origin, direction;
 
 	// ≥ı ºªØ Ray 
-	Ray(const Vec3f & _o, const Vec3f & _d) : origin(_o), direction(_d) {}
+	Ray(const Vec3f & _o, const Vec3f & _d) : origin(_o), direction(_d.unit()) {}
 	Ray()  {}
 	Ray(const Ray & r) : origin(r.origin), direction(r.direction) {}
 	Ray & operator = (const Ray & r) {
 		origin = r.origin;
-		direction = r.direction;
+		direction = r.direction.unit();
 		return *this;
 	}
 
