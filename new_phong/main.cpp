@@ -22,25 +22,37 @@
 using namespace std;
 
 // 画布大小
-const GLuint WIDTH = 800, HEIGHT = 800;
+const GLuint WIDTH = 400, HEIGHT = 400;
 
 long maxDepth = 20;
 float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
+// 消锯齿的采样率
+int ns = 5;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
 
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-Vec3f color(const Ray & ray, Object* scene)
+Vec3f random_in_unit_sphere() {
+	Vec3f p;
+	do {
+		p = Vec3f((rand() % (100) / (float)(100)),
+			(rand() % (100) / (float)(100)),
+			(rand() % (100) / (float)(100)))*2.0 - Vec3f(1, 1, 1);
+	} while (p.sqrLength() >= 1.0);
+	return p;
+}
+
+Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 {
 	IntersectResult result = scene->isIntersected(ray);
 
-	if (result.isHit) {
-		Vec3f N =result.normal.unit();
-		return Vec3f(N.x + 1, N.y + 1, N.z + 1)*0.5;
+	if (result.isHit&&maxReflect>0) {
+		Vec3f target = result.position + result.normal.unit() + random_in_unit_sphere();
+		return color(Ray(result.position,target-result.position),scene, maxReflect-1)*0.5;
 	}
 	// 获得单位向量
 	Vec3f unit_dir = ray.direction.unit();
@@ -49,6 +61,8 @@ Vec3f color(const Ray & ray, Object* scene)
 	// t=0时,颜色为(255,255,255),t=1时，颜色为(127.5,178.5,255)
 	return Vec3f(1.0, 1.0, 1.0)*(1.0 - t) + Vec3f(0.5, 0.7, 1.0)*t;
 }
+
+
 
 void renderScene(GLFWwindow* window)
 {
@@ -75,8 +89,15 @@ void renderScene(GLFWwindow* window)
 			for (long x = 0; x < WIDTH; ++x)
 			{
 				float sx = dx * x;
-				Ray ray = cam.generateRay(sx, sy);
-				Vec3f c = color(ray, &scene);
+				Vec3f c(0, 0, 0);
+				for (int s = 0; s < ns; s++) {
+					float random = rand() % (100) / (float)(100);
+					float u = sx + random / WIDTH;
+					float v = sy + random / HEIGHT;
+					Ray ray = cam.generateRay(u, v);
+					c += color(ray, &scene, MAX_RAY_DEPTH);
+				}
+				c /= float(ns);
 				glColor3ub(c.x * 255, c.y * 255, c.z * 255);
 				glVertex2f(sx, sy);
 			}
