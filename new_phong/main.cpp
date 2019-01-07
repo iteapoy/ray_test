@@ -33,18 +33,38 @@ float dy = 1.0f / HEIGHT;
 
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
 
+
+
+bool hit_sphere(const Vec3f& center, float radius, const Ray& ray)
+{
+	Vec3f oc = ray.origin - center;
+
+	float a = ray.direction.dot(ray.direction);
+
+	float b = 2.0 * oc.dot(ray.direction);
+
+	float c = oc.dot(oc) - radius * radius;
+
+	float discriminant = b * b - 4 * a*c;
+
+	return (discriminant > 0);
+
+}
+
 Vec3f color(const Ray & ray)
 {
+	if (hit_sphere(Vec3f(0, 0, -1), 0.5, ray))
+		return Vec3f(1, 0, 0);
 	// 获得单位向量
 	Vec3f unit_dir = ray.direction.unit();
 	// [-1,1]->[0,1]
-	float t = 0.5*(unit_dir.x + 1.0);
+	float t = 0.5*(unit_dir.y + 1.0);
 	// t=0时,颜色为(255,255,255),t=1时，颜色为(127.5,178.5,255)
 	return Vec3f(1.0, 1.0, 1.0)*(1.0 - t) + Vec3f(0.5, 0.7, 1.0)*t;
 }
 
-Vec3f lower_left_corner(-2.0, -1.0, -1.0);
-Vec3f horizontal(4.0, 0.0, 0.0);
+Vec3f lower_left_corner(-1.0, -1.0, -1.0);
+Vec3f horizontal(2.0, 0.0, 0.0);
 Vec3f vertical(0.0, 2.0, 0.0);
 Vec3f origin(0.0, 0.0, 0.0);
 
