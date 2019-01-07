@@ -16,6 +16,7 @@
 #include <glm\glm.hpp>
 
 #include "Vec3.h"
+#include "Ray.h"
 
 using namespace std;
 
@@ -31,6 +32,21 @@ float dy = 1.0f / HEIGHT;
 #define MAX_RAY_DEPTH 3
 
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
+
+Vec3f color(const Ray & ray)
+{
+	// 获得单位向量
+	Vec3f unit_dir = ray.direction.unit();
+	// [-1,1]->[0,1]
+	float t = 0.5*(unit_dir.x + 1.0);
+	// t=0时,颜色为(255,255,255),t=1时，颜色为(127.5,178.5,255)
+	return Vec3f(1.0, 1.0, 1.0)*(1.0 - t) + Vec3f(0.5, 0.7, 1.0)*t;
+}
+
+Vec3f lower_left_corner(-2.0, -1.0, -1.0);
+Vec3f horizontal(4.0, 0.0, 0.0);
+Vec3f vertical(0.0, 2.0, 0.0);
+Vec3f origin(0.0, 0.0, 0.0);
 
 int main(int argc, char **argv)
 {
@@ -65,9 +81,9 @@ int main(int argc, char **argv)
 			for (long x = 0; x < WIDTH; ++x)
 			{
 				float sx = dx * x;
-
-				Vec3f color(sx, sy, 0.2);
-				glColor3ub(color.x*255,color.y*255,color.z*255);
+				Ray ray(origin, lower_left_corner + horizontal*sx + vertical*sy);
+				Vec3f c = color(ray);
+				glColor3ub(c.x*255,c.y*255,c.z*255);
 				glVertex2f(sx, sy);
 			}
 		}

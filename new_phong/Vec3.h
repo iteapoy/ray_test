@@ -52,7 +52,7 @@ public:
 	}
 
 	// 获得单位向量
-	Vec3f get_unit()
+	Vec3f unit() const
 	{
 		float length = this->length();
 		// 除零
