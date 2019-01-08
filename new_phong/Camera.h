@@ -4,32 +4,45 @@
 
 #include "Ray.h"
 
+Vec3f random_in_unit_disk();
+
 class Camera
 {
 public:
-	Vec3f lower_left_corner;  // 屏幕左下角
-	Vec3f horizontal;   // 水平位置
-	Vec3f vertical;       // 垂直方向
-	Vec3f origin;         // 原点的位置
-
-	// lookfrom：相机位置   lookat：看的位置 up：相机的倾斜方向 FOV:视野  aspect：屏幕长宽比
-	Camera(Vec3f lookfrom, Vec3f lookat, Vec3f up, float FOV, float aspect) { 
-		Vec3f x, y, z;
-		float theta = FOV * PI / 180;
+	Camera(Vec3f lookfrom, Vec3f lookat, Vec3f vup, float vfov, float aspect, float aperture, float focus_dist) { // vfov is top to bottom in degrees
+		lens_radius = aperture / 2;
+		float theta = vfov * PI / 180;
 		float half_height = tan(theta / 2);
 		float half_width = aspect * half_height;
 		origin = lookfrom;
-		z = (lookfrom - lookat).unit();
-		x = up.cross(z).unit();
-		y = z.cross(x);
-		lower_left_corner = origin -  x * half_width - y * half_height - z;
-		horizontal = x * 2 * half_width;
-		vertical = y * 2 * half_height;
+		w = (lookfrom - lookat).unit();
+		u = vup.cross(w).unit();
+		v = w.cross(u);
+		lower_left_corner = origin - u*half_width * focus_dist - v*half_height * focus_dist - w*focus_dist;
+		horizontal = u*2 * half_width*focus_dist;
+		vertical = v*2 * half_height*focus_dist;
+	}
+	Ray generateRay(float s, float t) {
+		Vec3f rd = random_in_unit_disk()*lens_radius;
+		Vec3f offset = u * rd.x+ v * rd.y;
+		return Ray(origin + offset, lower_left_corner + horizontal*s +vertical*t - origin - offset);
 	}
 
-
-	Ray generateRay(float x, float y) { return Ray(origin, lower_left_corner + horizontal * x + vertical * y - origin); }
-
+	Vec3f origin;
+	Vec3f lower_left_corner;
+	Vec3f horizontal;
+	Vec3f vertical;
+	Vec3f u, v, w;
+	float lens_radius;
 };
+
+Vec3f random_in_unit_disk() {
+	/*在z=0平面上产生一个“起点在原点，长度小于1，方向随机”的向量。为什么是z=0平面，这个和相机的倾斜方向有关。（相机的倾斜方向为view up （简称vup，一般设置为（0，1，0）））*/
+	Vec3f p;
+	do {
+		p = Vec3f((rand() % (100) / (float)(100)), (rand() % (100) / (float)(100)), 0)*2.0 - Vec3f(1, 1, 0);
+	} while (p.dot(p) >= 1.0);
+	return p;
+}
 
 #endif
