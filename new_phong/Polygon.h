@@ -71,7 +71,7 @@ public:
 			i++;
 		}
 
-		/*获得主导坐标轴的uv平面的二维向量*/
+		/*三维向量->二维向量：映射到主导坐标轴的uv平面*/
 		Vec3f *vertexes_uv=new Vec3f[number + 1];
 
 		switch (i) {
