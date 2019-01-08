@@ -89,15 +89,22 @@ void renderScene(GLFWwindow* window)
 	Polygon* polygon2 = new Polygon(vertexes3_2, 3);
 	polygon2->material = new Lambertian(Vec3f(0.3, 0.8, 0.0));
 
+	// Îå±ßÐÎ
 	Vec3f vertexes5[5];
 	vertexes5[0] = Vec3f(3.3000, 1.3000, 0.0000);
-	vertexes5[1] = Vec3f(2.3489, 0.6090, 0.0000);
-	vertexes5[2] = Vec3f(2.7122, -0.5090, 0.0000);
-	vertexes5[3] = Vec3f(3.8878, -0.5090, 0.0000);
-	vertexes5[4] = Vec3f(4.2511, 0.6090, 0.0000);
+	vertexes5[3] = Vec3f(2.3489, 0.6090, 0.0000);
+	vertexes5[1] = Vec3f(2.7122, -0.5090, 0.0000);
+	vertexes5[4] = Vec3f(3.8878, -0.5090, 0.0000);
+	vertexes5[2] = Vec3f(4.2511, 0.6090, 0.0000);
+
+	//vertexes5[0] = Vec3f(3.3000, 1.3000, 0.0000);
+	//vertexes5[1] = Vec3f(2.3489, 0.6090, 0.0000);
+	//vertexes5[2] = Vec3f(2.7122, -0.5090, 0.0000);
+	//vertexes5[3] = Vec3f(3.8878, -0.5090, 0.0000);
+	//vertexes5[4] = Vec3f(4.2511, 0.6090, 0.0000);
+
 	Polygon* polygon3 = new Polygon(vertexes5, 5);
 	polygon3->material = new Lambertian(Vec3f(1.0, 0.0, 0.0));
-
 
 	Union scene;
 	scene.push(sphere1);

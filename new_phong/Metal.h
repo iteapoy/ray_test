@@ -16,8 +16,8 @@ public:
 		Vec3f reflected = reflect(ray.direction.unit(), result.normal);
 		out = Ray(result.position, reflected);
 		attenuation = albedo;
-		//return (out.direction.dot(result.normal) > 0);
-		return true;
+		return (out.direction.dot(result.normal) > 0);
+		//return true;
 	}
 
 	Vec3f reflect(const Vec3f& v, const Vec3f& n) {
