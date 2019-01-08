@@ -12,7 +12,6 @@
 #define GLFW_INCLUDE_GLU
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
-#include <glm\vec3.hpp>
 #include <glm\glm.hpp>
 
 #include "Union.h"
@@ -20,6 +19,7 @@
 #include "Camera.h"
 #include "Lambertian.h"
 #include "Metal.h"
+#include "Polygon.h"
 
 using namespace std;
 
@@ -31,26 +31,13 @@ float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 20;
-float aperture = 0.1; //光圈
-Vec3f lookfrom(0, 0, 4);
-Vec3f lookat(0, 0, -1);
-float dist_to_focus = (lookfrom - lookat).length();
+int ns = 1;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
 
 void key_call_back(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-Vec3f random_in_unit_sphere() {
-	Vec3f p;
-	do {
-		p = Vec3f((rand() % (100) / (float)(100)),
-			(rand() % (100) / (float)(100)),
-			(rand() % (100) / (float)(100)))*2.0 - Vec3f(1, 1, 1);
-	} while (p.sqrLength() >= 1.0);
-	return p;
-}
 
 Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 {
@@ -72,23 +59,54 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 }
 
 
-
 void renderScene(GLFWwindow* window)
 {
-	Camera cam(lookfrom, lookat, Vec3f(0, 1, 0), 20, WIDTH / HEIGHT, aperture, dist_to_focus);
-	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
+	float aperture = 0.0; //光圈
+	Vec3f lookfrom(0, 0,12);
+	Vec3f lookat(0, 1, -1);
+	float dist_to_focus = (lookfrom - lookat).length();
+	Camera cam(lookfrom, lookat, Vec3f(0, 1, 0), 30, WIDTH / HEIGHT);
+	Sphere* sphere1 = new Sphere(Vec3f(-2, 0.5, -1),1);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
 	Sphere* sphere3 = new Sphere(Vec3f(1, 0, -1), 0.5);
 	Sphere* sphere4 = new Sphere(Vec3f(-1, 0, -1), 0.5);
-	sphere1->material = new Lambertian(Vec3f(0.8, 0.3, 0.3));
+	sphere1->material = new Lambertian(Vec3f(0.5, 0.7, 0.6));
 	sphere2->material = new Lambertian(Vec3f(0.8, 0.8, 0.0));
 	sphere3->material = new Metal(Vec3f(0.8, 0.6, 0.2));
 	sphere4->material = new Metal(Vec3f(0.8, 0.8, 0.8));
+	Vec3f vertexes3_1[3];
+	vertexes3_1[0] = Vec3f(3, -0.5, -2);
+	vertexes3_1[1] = Vec3f(-1, -0.5, -4);
+	vertexes3_1[2] = Vec3f(0, 5, -3);
+	Polygon* polygon1 = new Polygon(vertexes3_1, 3);
+	polygon1->material = new Metal(Vec3f(0.8, 0.6, 0.5));
+
+	// 三角形
+	Vec3f vertexes3_2[3];
+	vertexes3_2[0] = Vec3f(-1, 1.5, -1);
+	vertexes3_2[1] = Vec3f(-3, 1.5, -1);
+	vertexes3_2[2] = Vec3f(-2, 3.5, -1);
+	Polygon* polygon2 = new Polygon(vertexes3_2, 3);
+	polygon2->material = new Lambertian(Vec3f(0.3, 0.8, 0.0));
+
+	Vec3f vertexes5[5];
+	vertexes5[0] = Vec3f(3.3000, 1.3000, 0.0000);
+	vertexes5[1] = Vec3f(2.3489, 0.6090, 0.0000);
+	vertexes5[2] = Vec3f(2.7122, -0.5090, 0.0000);
+	vertexes5[3] = Vec3f(3.8878, -0.5090, 0.0000);
+	vertexes5[4] = Vec3f(4.2511, 0.6090, 0.0000);
+	Polygon* polygon3 = new Polygon(vertexes5, 5);
+	polygon3->material = new Lambertian(Vec3f(1.0, 0.0, 0.0));
+
+
 	Union scene;
 	scene.push(sphere1);
 	scene.push(sphere2);
-	scene.push(sphere3);
-	scene.push(sphere4);
+	//scene.push(sphere3);
+	//scene.push(sphere4);
+	scene.push(polygon1);
+	scene.push(polygon2);
+	scene.push(polygon3);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件

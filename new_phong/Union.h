@@ -4,7 +4,6 @@
 
 // 定义一个物体的并集
 
-#include"constant.h"
 #include <vector>
 #include "Object.h"
 
@@ -23,7 +22,7 @@ public:
 		long size = this->objects.size();
 		for (long i = 0; i < size; i++) {
 			IntersectResult result = this->objects[i]->isIntersected(ray);
-			if (result.geometry && (result.distance < minDistance)) {
+			if (result.geometry && (result.distance < minDistance) && (result.distance>0.001)) {
 				minDistance = result.distance;
 				minResult = result;
 			}
