@@ -32,7 +32,7 @@ float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 2 ;
+int ns = 10 ;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3

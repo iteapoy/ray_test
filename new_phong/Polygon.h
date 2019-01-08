@@ -110,6 +110,7 @@ public:
 				result.normal = poly_n;
 				return result;
 		}
+		delete[]vertexes_uv;
 		return IntersectResult::noHit();
 	}
 };
