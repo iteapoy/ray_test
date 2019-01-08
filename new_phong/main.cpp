@@ -31,9 +31,9 @@ float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 1;
+int ns = 20;
 float aperture = 0.1; //光圈
-Vec3f lookfrom(3, 3, 2);
+Vec3f lookfrom(0, 0, 4);
 Vec3f lookat(0, 0, -1);
 float dist_to_focus = (lookfrom - lookat).length();
 
@@ -75,7 +75,7 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 
 void renderScene(GLFWwindow* window)
 {
-	Camera cam(lookfrom, lookat, Vec3f(0, 1, 0), 100, WIDTH / HEIGHT, aperture, dist_to_focus);
+	Camera cam(lookfrom, lookat, Vec3f(0, 1, 0), 20, WIDTH / HEIGHT, aperture, dist_to_focus);
 	Sphere* sphere1 = new Sphere(Vec3f(0, 0, -1), 0.5);
 	Sphere* sphere2 = new Sphere(Vec3f(0, -100.5, -1), 100);
 	Sphere* sphere3 = new Sphere(Vec3f(1, 0, -1), 0.5);
