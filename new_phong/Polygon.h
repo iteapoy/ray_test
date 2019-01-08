@@ -37,8 +37,9 @@ public:
 			}
 			sh = nsh;
 		}
-		if (nc != 0) { return true; }
-		else { return false; }
+		if (nc != 0)  return true; 
+		//if (nc %2)  return true; 
+		 return false; 
 	}
 
 	virtual IntersectResult isIntersected(const Ray& ray) {
