@@ -32,7 +32,7 @@ float dD = 255.0f / maxDepth;
 float dx = 1.0f / WIDTH;
 float dy = 1.0f / HEIGHT;
 // 消锯齿的采样率
-int ns = 20 ;
+int ns = 30 ;
 
 // 递归深度
 #define MAX_RAY_DEPTH 3
@@ -45,7 +45,7 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 	if (result.isHit&&maxReflect > 0) {
 		Ray out;
 		Vec3f attenuation;
-		if (result.geometry->material&&maxReflect > 0 && result.geometry->material->sample(ray, result, attenuation, out)) {
+		if (result.geometry->material && result.geometry->material->sample(ray, result, attenuation, out)) {
 			return attenuation * color(out, scene, maxReflect - 1);
 		}
 	}
@@ -61,9 +61,9 @@ Vec3f color(const Ray & ray, Object* scene, long maxReflect)
 void renderScene(GLFWwindow* window)
 {
 	// 摄像机
-	Vec3f lookfrom(0, 0,12);
+	Vec3f lookfrom(0, 2,12);
 	Vec3f lookat(0, 1, -1);
-	float FOV = 20;
+	float FOV = 30;
 	Camera cam(lookfrom, lookat, Vec3f(0, 1, 0), FOV, WIDTH / HEIGHT);
 
 	Sphere* sphere1 = new Sphere(Vec3f(1, 0, 2),0.5);
@@ -102,8 +102,8 @@ void renderScene(GLFWwindow* window)
 	Polygon* polygon3 = new Polygon(vertexes5, 5);
 	polygon3->material = new Lambertian(Vec3f(1.0, 0.0, 0.0));
 
-	Box* box1 = new Box(Vec3f(-2.0, -0.5, 4.0), Vec3f(-1.0, 1.0, 2.0));
-	box1->material = new Lambertian(Vec3f(0.3, 0.8, 0.0));
+	Box* cube1 = new Box(Vec3f(-2.0, -0.5, 4.0), Vec3f(-1.0, 0.5, 3.0));
+	cube1->material = new Lambertian(Vec3f(0.3, 0.8, 0.0));
 
 	Union scene;
 	scene.push(sphere1);
@@ -113,7 +113,7 @@ void renderScene(GLFWwindow* window)
 	scene.push(polygon1);
 	scene.push(polygon2);
 	scene.push(polygon3);
-	scene.push(box1);
+	scene.push(cube1);
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents(); //响应事件

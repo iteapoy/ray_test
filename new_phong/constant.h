@@ -10,4 +10,7 @@ const float INF=1e30;
 // 定义了浮点数下的0
 #define ALMOST_ZERO(x) ((x)>-EPSILON && (x)<EPSILON)
 
+#define max(a,b) ((a)>(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
+
 #endif
